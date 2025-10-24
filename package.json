@@ -16,6 +16,9 @@
     "api-client",
     "typescript"
   ],
+  "files": [
+    "dist"
+  ],
   "author": "Jacek Labudda <j.labudda@dock.codes>",
   "license": "MIT",
   "devDependencies": {
