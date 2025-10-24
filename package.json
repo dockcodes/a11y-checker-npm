@@ -1,0 +1,26 @@
+{
+  "name": "@dockcodes/a11y-checker",
+  "version": "1.0.0",
+  "description": "TypeScript client for Dock A11y Checker API",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "clean": "rm -rf dist",
+    "build": "tsup",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "a11y",
+    "wcag",
+    "accessibility",
+    "api-client",
+    "typescript"
+  ],
+  "author": "Jacek Labudda <j.labudda@dock.codes>",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^5.0",
+    "@types/node": "^24.0",
+    "tsup": "^8.0"
+  }
+}
