@@ -24,12 +24,13 @@ run();
 
 ## API Methods
 
-|Method|Description|
-|---|---|
-|scan(url, lang?, device?, sync?, extraData?, uniqueKey?)|Run a new accessibility scan|
-|rescan(uuid, lang?, sync?, extraData?)|Rescan an existing audit|
-|audit(uuid, lang?, extraData?)|Get audit details|
-|audits(search, page?, perPage?, sort?, uniqueKey?)|Get multiple audits|
-|history(uuid, page?, perPage?, sort?)|Get audit history|
-|deleteAudit(uuid)|Delete an audit|
-|deleteHistory(uuid)|Delete an audit's history|
+| Method                                                   | Description                   |
+|----------------------------------------------------------|-------------------------------|
+| scan(url, lang?, device?, sync?, extraData?, uniqueKey?) | Run a new accessibility scan  |
+| rescan(uuid, lang?, sync?, extraData?)                   | Rescan an existing audit      |
+| audit(uuid, lang?, extraData?)                           | Get audit details             |
+| audits(search, page?, perPage?, sort?, uniqueKey?)       | Get multiple audits           |
+| history(uuid, page?, perPage?, sort?)                    | Get audit history             |
+| deleteAudit(uuid)                                        | Delete an audit               |
+| deleteHistory(uuid)                                      | Delete an audit's history     |
+| updateAuditManual(uuid, criterionId, status, device)     | Update status of manual audit |

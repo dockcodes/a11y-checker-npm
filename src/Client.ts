@@ -1,6 +1,7 @@
 import { Device } from "./enums/Device";
 import { Language } from "./enums/Language";
 import { Sort } from "./enums/Sort";
+import { AuditStatus } from "./enums/AuditStatus";
 
 export class Client {
     private readonly baseUrl: string;
@@ -95,11 +96,25 @@ export class Client {
         return this.request("history", { uuid }, {}, "delete");
     }
 
+    async updateAuditManual(
+        uuid: string,
+        criterionId: string,
+        status: AuditStatus,
+        device: Device
+    ) {
+        return this.request("audit/manual", {
+            uuid,
+            status,
+            device,
+            criterion_id: criterionId
+        }, {}, 'post');
+    }
+
     private async request(
         endpoint: string,
         params: Record<string, any> = {},
         headers: Record<string, string> = {},
-        method: "get" | "delete" = "get"
+        method: "get" | "delete" | "post" = "get"
     ): Promise<{ response: any; status: number }> {
         if (this.apiKey) params.key = this.apiKey;
         params.t = Math.floor(Date.now() / 10000);
