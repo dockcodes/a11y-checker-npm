@@ -12,11 +12,21 @@ npm install @dockcodes/a11y-checker
 ```ts
 import { Client, Language, Device } from "@dockcodes/a11y-checker";
 
-const client = new Client("YOUR_API_KEY");
+const guest = new Client(); // without key
+// const client = new Client("YOUR_API_KEY");
 
 async function run() {
-    const result = await client.scan("https://example.com", Language.PL, Device.DESKTOP, true);
+    const result = await guest.scan({
+        url: "https://example.com",
+        lang: Language.PL,
+        device: Device.DESKTOP,
+        sync: true
+    });
     console.log(result);
+    
+    guest.audit({uuid: result.response.uuid}).then(result => {
+        console.log(result)
+    })
 }
 
 run();
@@ -24,13 +34,17 @@ run();
 
 ## API Methods
 
-| Method                                                   | Description                   |
-|----------------------------------------------------------|-------------------------------|
-| scan(url, lang?, device?, sync?, extraData?, uniqueKey?) | Run a new accessibility scan  |
-| rescan(uuid, lang?, sync?, extraData?)                   | Rescan an existing audit      |
-| audit(uuid, lang?, extraData?)                           | Get audit details             |
-| audits(search, page?, perPage?, sort?, uniqueKey?)       | Get multiple audits           |
-| history(uuid, page?, perPage?, sort?)                    | Get audit history             |
-| deleteAudit(uuid)                                        | Delete an audit               |
-| deleteHistory(uuid)                                      | Delete an audit's history     |
-| updateAuditManual(uuid, criterionId, status, device)     | Update status of manual audit |
+| Method                                                 | Description                   |
+| ------------------------------------------------------ | ----------------------------- |
+| `scan(options: ScanRequest)`                           | Run a new accessibility scan  |
+| `rescan(options: RescanRequest)`                       | Rescan an existing audit      |
+| `audit(options: AuditRequest)`                         | Get audit details             |
+| `audits(options: AuditsRequest)`                       | Get multiple audits           |
+| `history(options: HistoryRequest)`                     | Get audit history             |
+| `deleteAudit(options: DeleteRequest)`                  | Delete an audit               |
+| `deleteHistory(options: DeleteRequest)`                | Delete an audit's history     |
+| `updateAuditManual(options: UpdateAuditManualRequest)` | Update status of manual audit |
+
+## Contact
+
+If you need an API key or would like to learn more about this solution, please visit [wcag.dock.codes](https://wcag.dock.codes).

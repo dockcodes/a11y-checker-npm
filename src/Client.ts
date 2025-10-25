@@ -1,7 +1,13 @@
-import { Device } from "./enums/Device";
-import { Language } from "./enums/Language";
-import { Sort } from "./enums/Sort";
-import { AuditStatus } from "./enums/AuditStatus";
+import {Device} from "./enums/Device";
+import {Language} from "./enums/Language";
+import {Sort} from "./enums/Sort";
+import {ScanRequest} from "./contracts/ScanRequest";
+import {RescanRequest} from "./contracts/RescanRequest";
+import {AuditRequest} from "./contracts/AuditRequest";
+import {AuditsRequest} from "./contracts/AuditsRequest";
+import {HistoryRequest} from "./contracts/HistoryRequest";
+import {DeleteRequest} from "./contracts/DeleteRequest";
+import {UpdateAuditManualRequest} from "./contracts/UpdateAuditManualRequest";
 
 export class Client {
     private readonly baseUrl: string;
@@ -13,14 +19,7 @@ export class Client {
         this.baseUrl = baseUrl.replace(/\/$/, "");
     }
 
-    async scan(
-        url: string,
-        lang: Language = Language.EN,
-        device: Device = Device.DESKTOP,
-        sync = false,
-        extraData = false,
-        uniqueKey?: string
-    ) {
+    async scan({url, lang = Language.EN, device = Device.DESKTOP, sync = false, extraData = false, uniqueKey}: ScanRequest) {
         const data: Record<string, any> = {
             url,
             sync,
@@ -32,12 +31,7 @@ export class Client {
         return this.request("scan", data);
     }
 
-    async rescan(
-        uuid: string,
-        lang: Language = Language.EN,
-        sync = false,
-        extraData = false
-    ) {
+    async rescan({uuid, lang = Language.EN, sync = false, extraData = false}: RescanRequest) {
         return this.request("rescan", {
             uuid,
             sync,
@@ -46,11 +40,7 @@ export class Client {
         });
     }
 
-    async audit(
-        uuid: string,
-        lang: Language = Language.EN,
-        extraData = false
-    ) {
+    async audit({uuid, lang = Language.EN, extraData = false}: AuditRequest) {
         return this.request("audit", {
             uuid,
             lang,
@@ -58,56 +48,41 @@ export class Client {
         });
     }
 
-    async audits(
-        search: string,
-        page = 1,
-        perPage = 10,
-        sort: Sort = Sort.LAST_AUDIT_DESC,
-        uniqueKey?: string
-    ) {
+    async audits({search, page = 1, perPage = 10, sort = Sort.LAST_AUDIT_DESC, uniqueKey = ""}: AuditsRequest) {
         return this.request("audits", {
             search,
             page,
             per_page: perPage,
             sort,
-            unique_key: uniqueKey ?? ""
+            unique_key: uniqueKey
         });
     }
 
-    async history(
-        uuid: string,
-        page = 1,
-        perPage = 10,
-        sort: Sort = Sort.CREATED_AT_ASC
-    ) {
-        return this.request("history", {
+    async history({uuid, page = 1, perPage = 10, sort = Sort.CREATED_AT_ASC, filters = {}}: HistoryRequest) {
+        const params: Record<string, any> = {
             uuid,
             page,
             per_page: perPage,
             sort
-        });
+        }
+        for (const [key, value] of Object.entries(filters)) {
+            if (value !== undefined && value !== null) {
+                params[key] = value instanceof Date ? value.toISOString() : value;
+            }
+        }
+        return this.request("history", params);
     }
 
-    async deleteAudit(uuid: string) {
-        return this.request("audit", { uuid }, {}, "delete");
+    async deleteAudit({uuid}: DeleteRequest) {
+        return this.request("audit", {uuid}, {}, "delete");
     }
 
-    async deleteHistory(uuid: string) {
-        return this.request("history", { uuid }, {}, "delete");
+    async deleteHistory({uuid}: DeleteRequest) {
+        return this.request("history", {uuid}, {}, "delete");
     }
 
-    async updateAuditManual(
-        uuid: string,
-        criterionId: string,
-        status: AuditStatus,
-        device: Device
-    ) {
-        return this.request("audit/manual", {
-            uuid,
-            status,
-            device,
-            criterion_id: criterionId
-        }, {}, 'post');
+    async updateAuditManual({uuid, criterionId, status, device}: UpdateAuditManualRequest) {
+        return this.request("audit/manual", {uuid, status, device, criterion_id: criterionId}, {}, "post");
     }
 
     private async request(
@@ -145,7 +120,7 @@ export class Client {
                 body = {};
             }
 
-            return { response: body, status: res.status };
+            return {response: body, status: res.status};
         } catch (err: any) {
             throw new Error(`Request failed: ${err.message}`);
         } finally {
