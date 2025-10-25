@@ -13,7 +13,7 @@ npm install @dockcodes/a11y-checker
 import { Client, Language, Device } from "@dockcodes/a11y-checker";
 
 const guest = new Client(); // without key
-// const client = new Client("YOUR_API_KEY");
+// const client = new Client({apiKey: "YOUR_API_KEY"});
 
 async function run() {
     const result = await guest.scan({

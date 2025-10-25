@@ -10,12 +10,14 @@ import {DeleteRequest} from "./contracts/DeleteRequest";
 import {UpdateAuditManualRequest} from "./contracts/UpdateAuditManualRequest";
 
 export class Client {
+    private readonly apiKey?: string;
     private readonly baseUrl: string;
 
-    constructor(
-        private readonly apiKey?: string,
-        baseUrl: string = "https://a11y-checker.wcag.dock.codes"
-    ) {
+    constructor({apiKey, baseUrl = "https://a11y-checker.wcag.dock.codes"}: {
+        apiKey?: string;
+        baseUrl?: string;
+    } = {}) {
+        this.apiKey = apiKey;
         this.baseUrl = baseUrl.replace(/\/$/, "");
     }
 
