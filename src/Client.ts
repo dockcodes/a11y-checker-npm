@@ -1,13 +1,14 @@
-import {Device} from "./enums/Device";
-import {Language} from "./enums/Language";
-import {Sort} from "./enums/Sort";
-import {ScanRequest} from "./contracts/ScanRequest";
-import {RescanRequest} from "./contracts/RescanRequest";
-import {AuditRequest} from "./contracts/AuditRequest";
-import {AuditsRequest} from "./contracts/AuditsRequest";
-import {HistoryRequest} from "./contracts/HistoryRequest";
-import {DeleteRequest} from "./contracts/DeleteRequest";
-import {UpdateAuditManualRequest} from "./contracts/UpdateAuditManualRequest";
+import { Device } from './enums/Device';
+import { Language } from './enums/Language';
+import { Sort } from './enums/Sort';
+import { ScanRequest } from './contracts/ScanRequest';
+import { RescanRequest } from './contracts/RescanRequest';
+import { AuditRequest } from './contracts/AuditRequest';
+import { AuditsRequest } from './contracts/AuditsRequest';
+import { HistoryRequest } from './contracts/HistoryRequest';
+import { DeleteRequest } from './contracts/DeleteRequest';
+import { UpdateAuditManualRequest } from './contracts/UpdateAuditManualRequest';
+import { UserRequest } from './contracts/UserRequest';
 
 export class Client {
     private readonly apiKey?: string;
@@ -85,6 +86,10 @@ export class Client {
 
     async updateAuditManual({uuid, criterionId, status, device}: UpdateAuditManualRequest) {
         return this.request("audit/manual", {uuid, status, device, criterion_id: criterionId}, {}, "post");
+    }
+
+    async user({}: UserRequest) {
+        return this.request("user", {}, {}, "get");
     }
 
     private async request(

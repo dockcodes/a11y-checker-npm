@@ -26,11 +26,9 @@ jobs:
         run: |
           TAG=${GITHUB_REF_NAME}
           echo "Setting version to $TAG"
-          # Jeśli package.json ma wersję — nadpisz
           if grep -q '"version":' package.json; then
             sed -i -E "s/\"version\": *\"[^\"]*\"/\"version\": \"${TAG}\"/" package.json
           else
-            # Jeśli nie ma wersji, dodaj na początku
             sed -i "1s/^/{\n  \"version\": \"${TAG}\",\n/" package.json
           fi
 

@@ -35,7 +35,7 @@ run();
 ## API Methods
 
 | Method                                                 | Description                   |
-| ------------------------------------------------------ | ----------------------------- |
+|--------------------------------------------------------|-------------------------------|
 | `scan(options: ScanRequest)`                           | Run a new accessibility scan  |
 | `rescan(options: RescanRequest)`                       | Rescan an existing audit      |
 | `audit(options: AuditRequest)`                         | Get audit details             |
@@ -44,6 +44,7 @@ run();
 | `deleteAudit(options: DeleteRequest)`                  | Delete an audit               |
 | `deleteHistory(options: DeleteRequest)`                | Delete an audit's history     |
 | `updateAuditManual(options: UpdateAuditManualRequest)` | Update status of manual audit |
+| `user(options: UserlRequest)`                          | Get current user info         |
 
 ## Contact
 
