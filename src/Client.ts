@@ -90,7 +90,10 @@ export class Client {
     }
 
     async historyUpdate({uuid, monitoring = null, notifications = null}: UpdateHistoryRequest) {
-        return this.request("history/update", {uuid, monitoring, notifications}, {}, "post");
+        let params: any = {uuid}
+        if (monitoring !== null) params['monitoring'] = monitoring
+        if (notifications !== null) params['notifications'] = notifications
+        return this.request("history/update", params, {}, "post");
     }
 
     async user({}: UserRequest) {
