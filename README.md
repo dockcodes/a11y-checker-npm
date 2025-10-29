@@ -34,18 +34,18 @@ run();
 
 ## API Methods
 
-| Method                                                              | Description                   |
-|---------------------------------------------------------------------|-------------------------------|
-| `scan(options: ScanRequest)`                                        | Run a new accessibility scan  |
-| `rescan(options: RescanRequest)`                                    | Rescan an existing audit      |
-| `audit(options: AuditRequest)`                                      | Get audit details             |
-| `audits(options: AuditsRequest)`                                    | Get multiple audits           |
-| `history(options: HistoryRequest)`                                  | Get audit history             |
-| `deleteAudit(options: DeleteRequest)`                               | Delete an audit               |
-| `deleteHistory(options: DeleteRequest)`                             | Delete an audit's history     |
-| `updateAuditManual(options: UpdateAuditManualRequest)`              | Update status of manual audit |
-| `historyUpdateMonitoring(options: UpdateHistoryMonitoringRequest)`  | Enable/disable monitoring     |
-| `user(options: UserRequest)`                                        | Get current user info         |
+| Method                                                 | Description                   |
+|--------------------------------------------------------|-------------------------------|
+| `scan(options: ScanRequest)`                           | Run a new accessibility scan  |
+| `rescan(options: RescanRequest)`                       | Rescan an existing audit      |
+| `audit(options: AuditRequest)`                         | Get audit details             |
+| `audits(options: AuditsRequest)`                       | Get multiple audits           |
+| `history(options: HistoryRequest)`                     | Get audit history             |
+| `deleteAudit(options: DeleteRequest)`                  | Delete an audit               |
+| `deleteHistory(options: DeleteRequest)`                | Delete an audit's history     |
+| `updateAuditManual(options: UpdateAuditManualRequest)` | Update status of manual audit |
+| `historyUpdate(options: UpdateHistoryRequest)`         | Update history                |
+| `user(options: UserRequest)`                           | Get current user info         |
 
 ## Contact
 

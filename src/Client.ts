@@ -9,7 +9,7 @@ import { HistoryRequest } from './contracts/HistoryRequest';
 import { DeleteRequest } from './contracts/DeleteRequest';
 import { UpdateAuditManualRequest } from './contracts/UpdateAuditManualRequest';
 import { UserRequest } from './contracts/UserRequest';
-import { UpdateHistoryMonitoringRequest } from './contracts/UpdateHistoryMonitoringRequest';
+import { UpdateHistoryRequest } from './contracts/UpdateHistoryRequest';
 
 export class Client {
     private readonly apiKey?: string;
@@ -89,8 +89,8 @@ export class Client {
         return this.request("audit/manual", {uuid, status, device, criterion_id: criterionId}, {}, "post");
     }
 
-    async historyUpdateMonitoring({uuid, status}: UpdateHistoryMonitoringRequest) {
-        return this.request("history/update-monitoring", {uuid, status}, {}, "post");
+    async historyUpdate({uuid, monitoring = null, notifications = null}: UpdateHistoryRequest) {
+        return this.request("history/update", {uuid, monitoring, notifications}, {}, "post");
     }
 
     async user({}: UserRequest) {
