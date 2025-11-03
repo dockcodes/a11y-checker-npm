@@ -1,19 +1,32 @@
+import type { AuditRequest } from './contracts/request/AuditRequest';
+import type { AuditsRequest } from './contracts/request/AuditsRequest';
+import type { DeleteRequest } from './contracts/request/DeleteRequest';
+import type { HistoryRequest } from './contracts/request/HistoryRequest';
+import type { LoginBody } from './contracts/request/loginRequest';
+import type { RescanRequest } from './contracts/request/RescanRequest';
+import type { ScanRequest } from './contracts/request/ScanRequest';
+import type { UpdateAuditManualRequest } from './contracts/request/UpdateAuditManualRequest';
+import type { UpdateHistoryRequest } from './contracts/request/UpdateHistoryRequest';
+import type { UserRequest } from './contracts/request/UserRequest';
+import { AuditResponse } from './contracts/response/AuditResponse';
+import type { AuditsResponse } from './contracts/response/AuditsResponse';
+import type { BaseResponse, ErrorResponse } from './contracts/response/BaseResponse';
+import type { DeleteResponse } from './contracts/response/DeleteResponse';
+import { HistoryResponse } from './contracts/response/HistoryResponse';
+import type { LoginResponse, LoginSuccess } from './contracts/response/loginResponse';
+import type { ScanResponse } from './contracts/response/ScanResponse';
+import type { UpdateAuditManualResponse } from './contracts/response/UpdateAuditManualResponse';
+import type { UpdateHistoryResponse } from './contracts/response/UpdateHistoryResponse';
+import type { UserResponse } from './contracts/response/UserResponse';
+import type { FetchOptions } from './contracts/types';
 import { Device } from './enums/Device';
 import { Language } from './enums/Language';
 import { Sort } from './enums/Sort';
-import { ScanRequest } from './contracts/ScanRequest';
-import { RescanRequest } from './contracts/RescanRequest';
-import { AuditRequest } from './contracts/AuditRequest';
-import { AuditsRequest } from './contracts/AuditsRequest';
-import { HistoryRequest } from './contracts/HistoryRequest';
-import { DeleteRequest } from './contracts/DeleteRequest';
-import { UpdateAuditManualRequest } from './contracts/UpdateAuditManualRequest';
-import { UserRequest } from './contracts/UserRequest';
-import { UpdateHistoryRequest } from './contracts/UpdateHistoryRequest';
 
 export class Client {
     private readonly apiKey?: string;
     private readonly baseUrl: string;
+    private authToken?: string;
 
     constructor({apiKey, baseUrl = "https://a11y-checker.wcag.dock.codes"}: {
         apiKey?: string;
@@ -23,7 +36,19 @@ export class Client {
         this.baseUrl = baseUrl.replace(/\/$/, "");
     }
 
-    async scan({url, lang = Language.EN, device = Device.DESKTOP, sync = false, extraData = false, uniqueKey}: ScanRequest) {
+    set setAuthToken(authToken: string) {
+        this.authToken = authToken;
+    }
+
+    async login(body: LoginBody, options: FetchOptions<LoginResponse>) {
+        const  onSuccess = (res: LoginSuccess) => {
+            options?.onSuccess(res)
+            this.setAuthToken = res.access_token;
+        }
+        return this.request<LoginResponse>('token', body, {}, "post", {...options, onSuccess})
+    }
+
+    async scan({url, lang = Language.EN, device = Device.DESKTOP, sync = false, extraData = false, uniqueKey}: ScanRequest, options: FetchOptions) {
         const data: Record<string, any> = {
             url,
             sync,
@@ -32,37 +57,55 @@ export class Client {
             unique_key: uniqueKey
         };
         if (device !== Device.ALL) data.device = device;
-        return this.request("scan", data);
+        return this.request<ScanResponse>("scan", data, {}, "get", options);
     }
 
-    async rescan({uuid, lang = Language.EN, sync = false, extraData = false}: RescanRequest) {
-        return this.request("rescan", {
+    async rescan({uuid, lang = Language.EN, sync = false, extraData = false}: RescanRequest, options: FetchOptions) {
+        return this.request<ScanResponse>(
+          'rescan',
+          {
             uuid,
             sync,
             lang,
-            extra_data: extraData
-        });
+            extra_data: extraData,
+          },
+          {},
+          'get',
+          options
+        );
     }
 
-    async audit({uuid, lang = Language.EN, extraData = false}: AuditRequest) {
-        return this.request("audit", {
+    async audit({uuid, lang = Language.EN, extraData = false}: AuditRequest, options: FetchOptions) {
+        return this.request<AuditResponse>(
+          'audit',
+          {
             uuid,
             lang,
-            extra_data: extraData
-        });
+            extra_data: extraData,
+          },
+          {},
+          'get',
+          options
+        );
     }
 
-    async audits({search, page = 1, perPage = 10, sort = Sort.LAST_AUDIT_DESC, uniqueKey = ""}: AuditsRequest) {
-        return this.request("audits", {
+    async audits({search, page = 1, perPage = 10, sort = Sort.LAST_AUDIT_DESC, uniqueKey = ""}: AuditsRequest, options: FetchOptions) {
+        return this.request<AuditsResponse>(
+          'audits',
+          {
             search,
             page,
             per_page: perPage,
             sort,
-            unique_key: uniqueKey
-        });
+            unique_key: uniqueKey,
+          },
+          {},
+          'get',
+          options
+        );
     }
 
-    async history({uuid, page = 1, perPage = 10, sort = Sort.CREATED_AT_ASC, filters = {}}: HistoryRequest) {
+    async history({uuid, page = 1, perPage = 10, sort = Sort.CREATED_AT_ASC, filters = {}}: HistoryRequest, options: FetchOptions) {
         const params: Record<string, any> = {
             uuid,
             page,
@@ -74,38 +117,39 @@ export class Client {
                 params[key] = value instanceof Date ? value.toISOString() : value;
             }
         }
-        return this.request("history", params);
+        return this.request<HistoryResponse>('history', params, {}, 'get', options);
     }
 
-    async deleteAudit({uuid}: DeleteRequest) {
-        return this.request("audit", {uuid}, {}, "delete");
+    async deleteAudit({uuid}: DeleteRequest, options: FetchOptions) {
+        return this.request<DeleteResponse>("audit", {uuid}, {}, "delete", options);
     }
 
-    async deleteHistory({uuid}: DeleteRequest) {
-        return this.request("history", {uuid}, {}, "delete");
+    async deleteHistory({uuid}: DeleteRequest, options: FetchOptions) {
+        return this.request<DeleteResponse>("history", {uuid}, {}, "delete", options);
     }
 
-    async updateAuditManual({uuid, criterionId, status, device}: UpdateAuditManualRequest) {
-        return this.request("audit/manual", {uuid, status, device, criterion_id: criterionId}, {}, "post");
+    async updateAuditManual({uuid, criterionId, status, device}: UpdateAuditManualRequest, options: FetchOptions) {
+        return this.request<UpdateAuditManualResponse>("audit/manual", {uuid, status, device, criterion_id: criterionId}, {}, "post", options);
     }
 
-    async historyUpdate({uuid, monitoring = null, notifications = null}: UpdateHistoryRequest) {
+    async historyUpdate({uuid, monitoring = null, notifications = null}: UpdateHistoryRequest, options: FetchOptions) {
         let params: any = {uuid}
         if (monitoring !== null) params['monitoring'] = monitoring
         if (notifications !== null) params['notifications'] = notifications
-        return this.request("history/update", params, {}, "post");
+        return this.request<UpdateHistoryResponse>("history/update", params, {}, "post", options);
     }
 
-    async user({}: UserRequest) {
-        return this.request("user", {}, {}, "get");
+    async user({}: UserRequest, options: FetchOptions) {
+        return this.request<UserResponse>("user", {}, {}, "get", options);
     }
 
-    private async request(
+    private async request<T extends BaseResponse<unknown>>(
         endpoint: string,
         params: Record<string, any> = {},
         headers: Record<string, string> = {},
-        method: "get" | "delete" | "post" = "get"
-    ): Promise<{ response: any; status: number }> {
+        method: "get" | "delete" | "post" = "get",
+        fetchOptions?: FetchOptions<Exclude<T, ErrorResponse>>
+    ): Promise<{ response: T; status: number }> {
         if (this.apiKey) params.key = this.apiKey;
         params.t = Math.floor(Date.now() / 10000);
 
@@ -116,12 +160,15 @@ export class Client {
             let url = `${this.baseUrl}/api/${endpoint}`;
             const reqHeaders = new Headers({
                 Accept: "application/json",
+                ...(this.authToken ? {Authorization:`Bearer ${this.authToken}`} : {}),
                 ...headers,
             });
             let options: RequestInit = {
                 method,
                 headers: reqHeaders,
                 signal: controller.signal,
+                ...fetchOptions
+                
             };
 
             if (method === "get" || method === "delete") {
@@ -136,12 +183,10 @@ export class Client {
             }
 
             const res = await fetch(url, options);
+            const body = await res.json();
 
-            let body: any = {};
-            try {
-                body = await res.json();
-            } catch {
-                body = {};
+            if ('detail' in body) {
+              throw new Error(body.detail);
             }
 
             return {response: body, status: res.status};
