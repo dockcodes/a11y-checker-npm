@@ -109,24 +109,33 @@ export class Client {
         if (this.apiKey) params.key = this.apiKey;
         params.t = Math.floor(Date.now() / 10000);
 
-        const query = new URLSearchParams(
-            Object.fromEntries(Object.entries(params).filter(([_, v]) => v !== undefined))
-        ).toString();
-
-        const url = `${this.baseUrl}/api/${endpoint}?${query}`;
-
         const controller = new AbortController();
         const timeout = setTimeout(() => controller.abort(), 300000); // 5 min timeout
 
         try {
-            const res = await fetch(url, {
-                method,
-                headers: {
-                    Accept: "application/json",
-                    ...headers
-                },
-                signal: controller.signal
+            let url = `${this.baseUrl}/api/${endpoint}`;
+            const reqHeaders = new Headers({
+                Accept: "application/json",
+                ...headers,
             });
+            let options: RequestInit = {
+                method,
+                headers: reqHeaders,
+                signal: controller.signal,
+            };
+
+            if (method === "get" || method === "delete") {
+                const query = new URLSearchParams(
+                  Object.fromEntries(Object.entries(params).filter(([_, v]) => v !== undefined))
+                ).toString();
+                url += `?${query}`;
+            } else if (method === "post") {
+                reqHeaders.set("Content-Type", "application/json");
+                options.headers = reqHeaders;
+                options.body = JSON.stringify(params);
+            }
+
+            const res = await fetch(url, options);
 
             let body: any = {};
             try {
