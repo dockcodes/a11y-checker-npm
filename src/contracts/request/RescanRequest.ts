@@ -1,4 +1,4 @@
-import { Language } from "../../enums/Language";
+import type { Language } from "../types";
 import type { BaseRequest } from "./BaseRequest";
 
 export interface RescanRequest extends BaseRequest {

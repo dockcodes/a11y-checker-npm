@@ -18,8 +18,8 @@ const guest = new Client(); // without key
 async function run() {
     const result = await guest.scan({
         url: "https://example.com",
-        lang: Language.PL,
-        device: Device.DESKTOP,
+        lang: "en",
+        device: "desktop",
         sync: false
     });
     console.log(result);

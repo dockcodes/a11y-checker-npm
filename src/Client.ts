@@ -12,16 +12,13 @@ import type { AuditResponse } from './contracts/response/AuditResponse';
 import type { AuditsResponse } from './contracts/response/AuditsResponse';
 import type { BaseResponse, ErrorResponse } from './contracts/response/BaseResponse';
 import type { DeleteResponse } from './contracts/response/DeleteResponse';
-import { HistoryResponse } from './contracts/response/HistoryResponse';
+import type { HistoryResponse } from './contracts/response/HistoryResponse';
 import type { LoginResponse, LoginSuccess } from './contracts/response/LoginResponse';
 import type { ScanResponse } from './contracts/response/ScanResponse';
 import type { UpdateAuditManualResponse } from './contracts/response/UpdateAuditManualResponse';
 import type { UpdateHistoryResponse } from './contracts/response/UpdateHistoryResponse';
 import type { UserResponse } from './contracts/response/UserResponse';
 import type { FetchOptions } from './contracts/types';
-import { Device } from './enums/Device';
-import { Language } from './enums/Language';
-import { Sort } from './enums/Sort';
 
 export class Client {
     private readonly apiKey?: string;
@@ -48,7 +45,7 @@ export class Client {
         return this.request<LoginResponse>('token', body, {}, "post", {...options, onSuccess})
     }
 
-    async scan({url, lang = Language.EN, device = Device.DESKTOP, sync = false, extraData = false, uniqueKey}: ScanRequest, options: FetchOptions) {
+    async scan({url, lang = "en", device = "all", sync = false, extraData = false, uniqueKey}: ScanRequest, options: FetchOptions) {
         const data: Record<string, any> = {
             url,
             sync,
@@ -56,11 +53,11 @@ export class Client {
             extra_data: extraData,
             unique_key: uniqueKey
         };
-        if (device !== Device.ALL) data.device = device;
+        if (device !== "all") data.device = device;
         return this.request<ScanResponse>("scan", data, {}, "get", options);
     }
 
-    async rescan({uuid, lang = Language.EN, sync = false, extraData = false}: RescanRequest, options: FetchOptions) {
+    async rescan({uuid, lang = "en", sync = false, extraData = false}: RescanRequest, options: FetchOptions) {
         return this.request<ScanResponse>(
           'rescan',
           {
@@ -75,7 +72,7 @@ export class Client {
         );
     }
 
-    async audit({uuid, lang = Language.EN, extraData = false}: AuditRequest, options: FetchOptions) {
+    async audit({uuid, lang = "en", extraData = false}: AuditRequest, options: FetchOptions) {
         return this.request<AuditResponse>(
           'audit',
           {
@@ -89,7 +86,7 @@ export class Client {
         );
     }
 
-    async audits({search, page = 1, perPage = 10, sort = Sort.LAST_AUDIT_DESC, uniqueKey = ""}: AuditsRequest, options: FetchOptions) {
+    async audits({search, page = 1, perPage = 10, sort = "last_audit_desc", uniqueKey = ""}: AuditsRequest, options: FetchOptions) {
         return this.request<AuditsResponse>(
           'audits',
           {
@@ -105,7 +102,7 @@ export class Client {
         );
     }
 
-    async history({uuid, page = 1, perPage = 10, sort = Sort.CREATED_AT_ASC, filters = {}}: HistoryRequest, options: FetchOptions) {
+    async history({uuid, page = 1, perPage = 10, sort = "created_at_asc", filters = {}}: HistoryRequest, options: FetchOptions) {
         const params: Record<string, any> = {
             uuid,
             page,

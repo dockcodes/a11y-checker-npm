@@ -11,6 +11,16 @@ export interface Listing {
   };
 }
 
+export type AuditStatus = 'to-tests' | 'failed' | 'passed';
+export type Device = 'desktop' | 'mobile' | 'all';
+export type Language = 'en' | 'pl';
+export type Sort =
+  | 'last_audit_desc'
+  | 'last_audit_asc'
+  | 'created_at_asc'
+  | 'created_at_desc';
+
+
 // AUDIT
 
 interface AuditTag {
@@ -55,3 +65,4 @@ export interface AuditContent {
   };
   violations: AuditItem[];
 }
+

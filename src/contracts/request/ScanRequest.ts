@@ -1,5 +1,4 @@
-import { Device } from '../../enums/Device';
-import { Language } from '../../enums/Language';
+import type { Device, Language } from '../types';
 import type { BaseRequest } from './BaseRequest';
 
 export interface ScanRequest extends BaseRequest {

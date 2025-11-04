@@ -1,4 +1,4 @@
-import { Sort } from "../../enums/Sort";
+import type { Sort } from "../types";
 import type { BaseRequest } from "./BaseRequest";
 import type { HistoryFilters } from "./HistoryFilters";
 
