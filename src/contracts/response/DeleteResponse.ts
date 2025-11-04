@@ -1,6 +1,6 @@
 import type { BaseResponse } from './BaseResponse';
 
-interface DeleteSuccess {
+export interface DeleteSuccess {
   success: true;
 }
 

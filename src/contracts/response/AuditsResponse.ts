@@ -12,7 +12,7 @@ interface AuditSmall {
   last_audit: string;
 }
 
-interface AuditsSuccess extends Listing {
+export interface AuditsSuccess extends Listing {
   data: AuditSmall[];
 }
 

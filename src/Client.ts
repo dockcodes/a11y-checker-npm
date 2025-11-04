@@ -146,7 +146,7 @@ export class Client {
         headers: Record<string, string> = {},
         method: "get" | "delete" | "post" = "get",
         fetchOptions?: FetchOptions<Exclude<T, ErrorResponse>>
-    ): Promise<{ response: T; status: number }> {
+    ): Promise<{ response: Exclude<T, ErrorResponse>; status: number }> {
         if (this.apiKey) params.key = this.apiKey;
         params.t = Math.floor(Date.now() / 10000);
 

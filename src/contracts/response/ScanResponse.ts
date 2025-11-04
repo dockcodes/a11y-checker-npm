@@ -1,6 +1,6 @@
 import type { BaseResponse } from './BaseResponse';
 
-interface ScanSuccess {
+export interface ScanSuccess {
   address_uuid: string;
   created_at: string;
   desktop?: { screenshot: string };

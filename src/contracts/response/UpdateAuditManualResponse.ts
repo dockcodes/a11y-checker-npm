@@ -1,6 +1,6 @@
 import type { BaseResponse } from './BaseResponse';
 
-interface UpdateAuditManualSuccess {
+export interface UpdateAuditManualSuccess {
   success: true;
 }
 

@@ -1,6 +1,6 @@
 import type { BaseResponse } from './BaseResponse';
 
-interface UserSuccess {
+export interface UserSuccess {
     requests: {
         limit: number;
         used: number;

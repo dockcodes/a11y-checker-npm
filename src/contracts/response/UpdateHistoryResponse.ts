@@ -1,6 +1,6 @@
 import type { BaseResponse } from './BaseResponse';
 
-interface UpdateHistorySuccess {
+export interface UpdateHistorySuccess {
   success: true;
 }
 

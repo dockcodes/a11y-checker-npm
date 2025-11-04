@@ -10,14 +10,14 @@ interface AuditBase {
   url: string;
   uuid: string;
 }
-interface AuditSuccess extends AuditBase {
+export interface AuditSuccess extends AuditBase {
   desktop?: AuditContent;
   mobile?: AuditContent;
   title: string;
   status: 'SUCCESS' | 'QUEUED';
 }
 
-interface AuditFailed extends AuditBase {
+export interface AuditFailed extends AuditBase {
   status: 'FAILED';
 }
 
