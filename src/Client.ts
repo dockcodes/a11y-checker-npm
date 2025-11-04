@@ -25,12 +25,15 @@ export class Client {
     private readonly baseUrl: string;
     private authToken?: string;
 
-    constructor({apiKey, baseUrl = "https://a11y-checker.wcag.dock.codes"}: {
+    constructor({
+        apiKey,
+        baseUrl = 'https://a11y-checker.wcag.dock.codes',
+    }: {
         apiKey?: string;
         baseUrl?: string;
     } = {}) {
         this.apiKey = apiKey;
-        this.baseUrl = baseUrl.replace(/\/$/, "");
+        this.baseUrl = baseUrl.replace(/\/$/, '');
     }
 
     set setAuthToken(authToken: string) {
@@ -38,14 +41,14 @@ export class Client {
     }
 
     async login(body: LoginBody, options?: FetchOptions<LoginResponse>) {
-        const  onSuccess = (res: LoginSuccess) => {
-            options?.onSuccess?.(res)
+        const onSuccess = (res: LoginSuccess) => {
+            options?.onSuccess?.(res);
             this.setAuthToken = res.access_token;
-        }
-        return this.request<LoginResponse>('token', body, {}, "post", {...options, onSuccess})
+        };
+        return this.request<LoginResponse>('token', body, {}, 'post', { ...options, onSuccess });
     }
 
-    async scan({url, lang = "en", device = "all", sync = false, extraData = false, uniqueKey, recaptchaToken, key}: ScanRequest, options?: FetchOptions<ScanResponse>) {
+    async scan({ url, lang = 'en', device = 'all', sync = false, extraData = false, uniqueKey, recaptchaToken, key }: ScanRequest, options?: FetchOptions<ScanResponse>) {
         const data: Record<string, any> = {
             url,
             sync,
@@ -53,68 +56,69 @@ export class Client {
             extra_data: extraData,
             unique_key: uniqueKey,
             recaptcha_token: recaptchaToken,
-            key
+            key,
         };
-        if (device !== "all") data.device = device;
-        return this.request<ScanResponse>("scan", data, {}, "get", options);
+        if (device !== 'all') data.device = device;
+        return this.request<ScanResponse>('scan', data, {}, 'get', options);
     }
 
-    async rescan({uuid, lang = "en", sync = false, extraData = false, key}: RescanRequest, options?: FetchOptions<ScanResponse>) {
+    async rescan({ uuid, lang = 'en', sync = false, extraData = false, recaptchaToken, key }: RescanRequest, options?: FetchOptions<ScanResponse>) {
         return this.request<ScanResponse>(
-          'rescan',
-          {
-            uuid,
-            sync,
-            lang,
-            extra_data: extraData,
-            key
-          },
-          {},
-          'get',
-          options
+            'rescan',
+            {
+                uuid,
+                sync,
+                lang,
+                extra_data: extraData,
+                recaptcha_token: recaptchaToken,
+                key,
+            },
+            {},
+            'get',
+            options
         );
     }
 
-    async audit({uuid, lang = "en", extraData = false, key}: AuditRequest, options?: FetchOptions<AuditResponse>) {
+    async audit({ uuid, lang = 'en', extraData = false, key }: AuditRequest, options?: FetchOptions<AuditResponse>) {
         return this.request<AuditResponse>(
-          'audit',
-          {
-            uuid,
-            lang,
-            extra_data: extraData,
-            key
-          },
-          {},
-          'get',
-          options
+            'audit',
+            {
+                uuid,
+                lang,
+                extra_data: extraData,
+                key,
+            },
+            {},
+            'get',
+            options
         );
     }
 
-    async audits({search, page = 1, perPage = 10, sort = "last_audit_desc", uniqueKey = "", key}: AuditsRequest, options?: FetchOptions<AuditsResponse>) {
+    async audits({ search, page = 1, perPage = 10, sort = 'last_audit_desc', uniqueKey = '', key }: AuditsRequest, options?: FetchOptions<AuditsResponse>) {
         return this.request<AuditsResponse>(
-          'audits',
-          {
-            search,
-            page,
-            per_page: perPage,
-            sort,
-            unique_key: uniqueKey,
-            key
-          },
-          {},
-          'get',
-          options
+            'audits',
+            {
+                search,
+                page,
+                per_page: perPage,
+                sort,
+                unique_key: uniqueKey,
+                key,
+            },
+            {},
+            'get',
+            options
         );
     }
 
-    async history({uuid, page = 1, perPage = 10, sort = "created_at_asc", filters = {}, key}: HistoryRequest, options?: FetchOptions<HistoryResponse>) {
+    async history({ uuid, page = 1, perPage = 10, sort = 'created_at_asc', filters = {}, key }: HistoryRequest, options?: FetchOptions<HistoryResponse>) {
         const params: Record<string, any> = {
             uuid,
             page,
             per_page: perPage,
             sort,
-            key
-        }
+            key,
+        };
         for (const [key, value] of Object.entries(filters)) {
             if (value !== undefined && value !== null) {
                 params[key] = value instanceof Date ? value.toISOString() : value;
@@ -123,34 +127,34 @@ export class Client {
         return this.request<HistoryResponse>('history', params, {}, 'get', options);
     }
 
-    async deleteAudit({uuid, key}: DeleteRequest, options?: FetchOptions<DeleteResponse>) {
-        return this.request<DeleteResponse>("audit", {uuid, key}, {}, "delete", options);
+    async deleteAudit({ uuid, key }: DeleteRequest, options?: FetchOptions<DeleteResponse>) {
+        return this.request<DeleteResponse>('audit', { uuid, key }, {}, 'delete', options);
     }
 
-    async deleteHistory({uuid, key}: DeleteRequest, options?: FetchOptions<DeleteResponse>) {
-        return this.request<DeleteResponse>("history", {uuid, key}, {}, "delete", options);
+    async deleteHistory({ uuid, key }: DeleteRequest, options?: FetchOptions<DeleteResponse>) {
+        return this.request<DeleteResponse>('history', { uuid, key }, {}, 'delete', options);
     }
 
-    async updateAuditManual({uuid, criterionId, status, device, key}: UpdateAuditManualRequest, options?: FetchOptions<UpdateAuditManualResponse>) {
-        return this.request<UpdateAuditManualResponse>("audit/manual", {uuid, status, device, criterion_id: criterionId, key}, {}, "post", options);
+    async updateAuditManual({ uuid, criterionId, status, device, key }: UpdateAuditManualRequest, options?: FetchOptions<UpdateAuditManualResponse>) {
+        return this.request<UpdateAuditManualResponse>('audit/manual', { uuid, status, device, criterion_id: criterionId, key }, {}, 'post', options);
     }
 
-    async historyUpdate({uuid, monitoring = null, notifications = null, key}: UpdateHistoryRequest, options?: FetchOptions<UpdateHistoryResponse>) {
-        let params: any = {uuid, key}
-        if (monitoring !== null) params['monitoring'] = monitoring
-        if (notifications !== null) params['notifications'] = notifications
-        return this.request<UpdateHistoryResponse>("history/update", params, {}, "post", options);
+    async historyUpdate({ uuid, monitoring = null, notifications = null, key }: UpdateHistoryRequest, options?: FetchOptions<UpdateHistoryResponse>) {
+        let params: any = { uuid, key };
+        if (monitoring !== null) params['monitoring'] = monitoring;
+        if (notifications !== null) params['notifications'] = notifications;
+        return this.request<UpdateHistoryResponse>('history/update', params, {}, 'post', options);
     }
 
-    async user({key}: UserRequest, options?: FetchOptions<UserResponse>) {
-        return this.request<UserResponse>("user", {key}, {}, "get", options);
+    async user({ key }: UserRequest, options?: FetchOptions<UserResponse>) {
+        return this.request<UserResponse>('user', { key }, {}, 'get', options);
     }
 
     private async request<T extends BaseResponse<unknown>>(
         endpoint: string,
         params: Record<string, any> = {},
         headers: Record<string, string> = {},
-        method: "get" | "delete" | "post" = "get",
+        method: 'get' | 'delete' | 'post' = 'get',
         fetchOptions?: FetchOptions<Exclude<T, ErrorResponse>>
     ): Promise<{ response: Exclude<T, ErrorResponse>; status: number }> {
         if (this.apiKey) params.key = this.apiKey;
@@ -162,25 +166,22 @@ export class Client {
         try {
             let url = `${this.baseUrl}/api/${endpoint}`;
             const reqHeaders = new Headers({
-                Accept: "application/json",
-                ...(this.authToken ? {Authorization:`Bearer ${this.authToken}`} : {}),
+                Accept: 'application/json',
+                ...(this.authToken ? { Authorization: `Bearer ${this.authToken}` } : {}),
                 ...headers,
             });
             let options: RequestInit = {
                 method,
                 headers: reqHeaders,
                 signal: controller.signal,
-                ...fetchOptions
-                
+                ...fetchOptions,
             };
 
-            if (method === "get" || method === "delete") {
-                const query = new URLSearchParams(
-                  Object.fromEntries(Object.entries(params).filter(([_, v]) => v !== undefined))
-                ).toString();
+            if (method === 'get' || method === 'delete') {
+                const query = new URLSearchParams(Object.fromEntries(Object.entries(params).filter(([_, v]) => v !== undefined))).toString();
                 url += `?${query}`;
-            } else if (method === "post") {
-                reqHeaders.set("Content-Type", "application/json");
+            } else if (method === 'post') {
+                reqHeaders.set('Content-Type', 'application/json');
                 options.headers = reqHeaders;
                 options.body = JSON.stringify(params);
             }
@@ -189,10 +190,10 @@ export class Client {
             const body = await res.json();
 
             if ('detail' in body) {
-              throw new Error(body.detail);
+                throw new Error(body.detail);
             }
 
-            return {response: body, status: res.status};
+            return { response: body, status: res.status };
         } catch (err: any) {
             throw new Error(`Request failed: ${err.message}`);
         } finally {
