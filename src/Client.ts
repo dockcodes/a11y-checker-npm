@@ -37,7 +37,7 @@ export class Client {
         this.authToken = authToken;
     }
 
-    async login(body: LoginBody, options: FetchOptions<LoginResponse>) {
+    async login(body: LoginBody, options?: FetchOptions<LoginResponse>) {
         const  onSuccess = (res: LoginSuccess) => {
             options?.onSuccess?.(res)
             this.setAuthToken = res.access_token;
@@ -45,7 +45,7 @@ export class Client {
         return this.request<LoginResponse>('token', body, {}, "post", {...options, onSuccess})
     }
 
-    async scan({url, lang = "en", device = "all", sync = false, extraData = false, uniqueKey}: ScanRequest, options: FetchOptions) {
+    async scan({url, lang = "en", device = "all", sync = false, extraData = false, uniqueKey}: ScanRequest, options?: FetchOptions<ScanResponse>) {
         const data: Record<string, any> = {
             url,
             sync,
@@ -57,7 +57,7 @@ export class Client {
         return this.request<ScanResponse>("scan", data, {}, "get", options);
     }
 
-    async rescan({uuid, lang = "en", sync = false, extraData = false}: RescanRequest, options: FetchOptions) {
+    async rescan({uuid, lang = "en", sync = false, extraData = false}: RescanRequest, options?: FetchOptions<ScanResponse>) {
         return this.request<ScanResponse>(
           'rescan',
           {
@@ -72,7 +72,7 @@ export class Client {
         );
     }
 
-    async audit({uuid, lang = "en", extraData = false}: AuditRequest, options: FetchOptions) {
+    async audit({uuid, lang = "en", extraData = false}: AuditRequest, options?: FetchOptions<AuditResponse>) {
         return this.request<AuditResponse>(
           'audit',
           {
@@ -86,7 +86,7 @@ export class Client {
         );
     }
 
-    async audits({search, page = 1, perPage = 10, sort = "last_audit_desc", uniqueKey = ""}: AuditsRequest, options: FetchOptions) {
+    async audits({search, page = 1, perPage = 10, sort = "last_audit_desc", uniqueKey = ""}: AuditsRequest, options?: FetchOptions<AuditsResponse>) {
         return this.request<AuditsResponse>(
           'audits',
           {
@@ -102,7 +102,7 @@ export class Client {
         );
     }
 
-    async history({uuid, page = 1, perPage = 10, sort = "created_at_asc", filters = {}}: HistoryRequest, options: FetchOptions) {
+    async history({uuid, page = 1, perPage = 10, sort = "created_at_asc", filters = {}}: HistoryRequest, options?: FetchOptions<HistoryResponse>) {
         const params: Record<string, any> = {
             uuid,
             page,
@@ -117,26 +117,26 @@ export class Client {
         return this.request<HistoryResponse>('history', params, {}, 'get', options);
     }
 
-    async deleteAudit({uuid}: DeleteRequest, options: FetchOptions) {
+    async deleteAudit({uuid}: DeleteRequest, options?: FetchOptions<DeleteResponse>) {
         return this.request<DeleteResponse>("audit", {uuid}, {}, "delete", options);
     }
 
-    async deleteHistory({uuid}: DeleteRequest, options: FetchOptions) {
+    async deleteHistory({uuid}: DeleteRequest, options?: FetchOptions<DeleteResponse>) {
         return this.request<DeleteResponse>("history", {uuid}, {}, "delete", options);
     }
 
-    async updateAuditManual({uuid, criterionId, status, device}: UpdateAuditManualRequest, options: FetchOptions) {
+    async updateAuditManual({uuid, criterionId, status, device}: UpdateAuditManualRequest, options?: FetchOptions<UpdateAuditManualResponse>) {
         return this.request<UpdateAuditManualResponse>("audit/manual", {uuid, status, device, criterion_id: criterionId}, {}, "post", options);
     }
 
-    async historyUpdate({uuid, monitoring = null, notifications = null}: UpdateHistoryRequest, options: FetchOptions) {
+    async historyUpdate({uuid, monitoring = null, notifications = null}: UpdateHistoryRequest, options?: FetchOptions<UpdateHistoryResponse>) {
         let params: any = {uuid}
         if (monitoring !== null) params['monitoring'] = monitoring
         if (notifications !== null) params['notifications'] = notifications
         return this.request<UpdateHistoryResponse>("history/update", params, {}, "post", options);
     }
 
-    async user({}: UserRequest, options: FetchOptions) {
+    async user({}: UserRequest, options?: FetchOptions<UserResponse>) {
         return this.request<UserResponse>("user", {}, {}, "get", options);
     }
 
