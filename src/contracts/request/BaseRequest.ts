@@ -1,3 +1,3 @@
 export interface BaseRequest {
-    key?: string;
+    key?: string | null;
 }
