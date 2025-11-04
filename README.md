@@ -33,19 +33,91 @@ run();
 ```
 
 ## API Methods
+| Method                                                                                                     | Description                   |
+|------------------------------------------------------------------------------------------------------------|-------------------------------|
+| `login(params: LoginRequest, options: FetchOptions) => LoginResponse`                                     | Run a new accessibility scan  |
+| `scan(params: ScanRequest, options: FetchOptions) => ScanResponse`                                        | Run a new accessibility scan  |
+| `rescan(params: RescanRequest, options: FetchOptions) => RescanResponse`                                  | Rescan an existing audit      |
+| `audit(params: AuditRequest, options: FetchOptions) => AuditResponse`                                     | Get audit details             |
+| `audits(params: AuditsRequest, options: FetchOptions) => AuditsResponse`                                  | Get multiple audits           |
+| `history(params: HistoryRequest, options: FetchOptions) => HistoryResponse`                               | Get audit history             |
+| `deleteAudit(params: DeleteRequest, options: FetchOptions) => DeleteResponse`                             | Delete an audit               |
+| `deleteHistory(params: DeleteRequest, options: FetchOptions) => DeleteResponse`                           | Delete an audit's history     |
+| `updateAuditManual(params: UpdateAuditManualRequest, options: FetchOptions) => UpdateAuditManualResponse` | Update status of manual audit |
+| `historyUpdate(params: UpdateHistoryRequest, options: FetchOptions) => UpdateHistoryResponse`             | Update history                |
+| `user(params: UserRequest, options: FetchOptions) => UserResponse`                                        | Get current user info         |
 
-| Method                                                 | Description                   |
-|--------------------------------------------------------|-------------------------------|
-| `scan(options: ScanRequest)`                           | Run a new accessibility scan  |
-| `rescan(options: RescanRequest)`                       | Rescan an existing audit      |
-| `audit(options: AuditRequest)`                         | Get audit details             |
-| `audits(options: AuditsRequest)`                       | Get multiple audits           |
-| `history(options: HistoryRequest)`                     | Get audit history             |
-| `deleteAudit(options: DeleteRequest)`                  | Delete an audit               |
-| `deleteHistory(options: DeleteRequest)`                | Delete an audit's history     |
-| `updateAuditManual(options: UpdateAuditManualRequest)` | Update status of manual audit |
-| `historyUpdate(options: UpdateHistoryRequest)`         | Update history                |
-| `user(options: UserRequest)`                           | Get current user info         |
+## Types
+
+[FetchOptions]: https://github.com/dockcodes/a11y-checker-npm/blob/main/src/contracts/types.ts
+[FetchOptions]
+
+[LoginRequest]: https://github.com/dockcodes/a11y-checker-npm/blob/main/src/contracts/request/LoginRequest.ts
+[LoginRequest]
+
+[LoginResponse]: https://github.com/dockcodes/a11y-checker-npm/blob/main/src/contracts/response/LoginResponse.ts
+[LoginResponse]
+
+[ScanRequest]: https://github.com/dockcodes/a11y-checker-npm/blob/main/src/contracts/request/ScanRequest.ts
+[ScanRequest]
+
+[ScanResponse]: https://github.com/dockcodes/a11y-checker-npm/blob/main/src/contracts/response/ScanResponse.ts
+[ScanResponse]
+
+[RescanRequest]: https://github.com/dockcodes/a11y-checker-npm/blob/main/src/contracts/request/RescanRequest.ts
+[RescanRequest]
+
+[RescanResponse]: https://github.com/dockcodes/a11y-checker-npm/blob/main/src/contracts/response/RescanResponse.ts
+[RescanResponse]
+
+[AuditRequest]: https://github.com/dockcodes/a11y-checker-npm/blob/main/src/contracts/request/AuditRequest.ts
+[AuditRequest]
+
+[AuditResponse]: https://github.com/dockcodes/a11y-checker-npm/blob/main/src/contracts/response/AuditResponse.ts
+[AuditResponse]
+
+[AuditsRequest]: https://github.com/dockcodes/a11y-checker-npm/blob/main/src/contracts/request/AuditsRequest.ts
+[AuditsRequest]
+
+[AuditsResponse]: https://github.com/dockcodes/a11y-checker-npm/blob/main/src/contracts/response/AuditsResponse.ts
+[AuditsResponse]
+
+[HistoryRequest]: https://github.com/dockcodes/a11y-checker-npm/blob/main/src/contracts/request/HistoryRequest.ts
+[HistoryRequest]
+
+[HistoryResponse]: https://github.com/dockcodes/a11y-checker-npm/blob/main/src/contracts/response/HistoryResponse.ts
+[HistoryResponse]
+
+[DeleteRequest]: https://github.com/dockcodes/a11y-checker-npm/blob/main/src/contracts/request/DeleteRequest.ts
+[DeleteRequest]
+
+[DeleteResponse]: https://github.com/dockcodes/a11y-checker-npm/blob/main/src/contracts/response/DeleteResponse.ts
+[DeleteResponse]
+
+[DeleteRequest]: https://github.com/dockcodes/a11y-checker-npm/blob/main/src/contracts/request/DeleteRequest.ts
+[DeleteRequest]
+
+[DeleteResponse]: https://github.com/dockcodes/a11y-checker-npm/blob/main/src/contracts/response/DeleteResponse.ts
+[DeleteResponse]
+
+[UpdateAuditManualRequest]: https://github.com/dockcodes/a11y-checker-npm/blob/main/src/contracts/request/UpdateAuditManualRequest.ts
+[UpdateAuditManualRequest]
+
+[UpdateAuditManualResponse]: https://github.com/dockcodes/a11y-checker-npm/blob/main/src/contracts/response/UpdateAuditManualResponse.ts
+[UpdateAuditManualResponse]
+
+[UpdateHistoryRequest]: https://github.com/dockcodes/a11y-checker-npm/blob/main/src/contracts/request/UpdateHistoryRequest.ts
+[UpdateHistoryRequest]
+
+[UpdateHistoryResponse]: https://github.com/dockcodes/a11y-checker-npm/blob/main/src/contracts/response/UpdateHistoryResponse.ts
+[UpdateHistoryResponse]
+
+[UserRequest]: https://github.com/dockcodes/a11y-checker-npm/blob/main/src/contracts/request/UserRequest.ts
+[UserRequest]
+
+[UserResponse]: https://github.com/dockcodes/a11y-checker-npm/blob/main/src/contracts/response/UserResponse.ts
+[UserResponse]
+
 
 ## Contact
 
