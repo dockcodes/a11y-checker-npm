@@ -1,6 +1,6 @@
 export interface FetchOptions<U = unknown>
   extends Omit<RequestInit, 'method' | 'headers' | 'body' | 'signal'> {
-  onSuccess: (res: U) => void;
+  onSuccess?: (res: U) => void;
 }
 
 export interface Listing {

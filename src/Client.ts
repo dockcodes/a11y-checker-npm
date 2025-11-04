@@ -39,7 +39,7 @@ export class Client {
 
     async login(body: LoginBody, options: FetchOptions<LoginResponse>) {
         const  onSuccess = (res: LoginSuccess) => {
-            options?.onSuccess(res)
+            options?.onSuccess?.(res)
             this.setAuthToken = res.access_token;
         }
         return this.request<LoginResponse>('token', body, {}, "post", {...options, onSuccess})
