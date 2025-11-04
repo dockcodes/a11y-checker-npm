@@ -6,7 +6,6 @@ import type { LoginBody } from './contracts/request/LoginRequest';
 import type { RescanRequest } from './contracts/request/RescanRequest';
 import type { ScanRequest } from './contracts/request/ScanRequest';
 import type { UpdateAuditManualRequest } from './contracts/request/UpdateAuditManualRequest';
-import type { UpdateHistoryRequest } from './contracts/request/UpdateHistoryRequest';
 import type { UserRequest } from './contracts/request/UserRequest';
 import type { AuditResponse } from './contracts/response/AuditResponse';
 import type { AuditsResponse } from './contracts/response/AuditsResponse';
@@ -16,7 +15,6 @@ import type { HistoryResponse } from './contracts/response/HistoryResponse';
 import type { LoginResponse, LoginSuccess } from './contracts/response/LoginResponse';
 import type { ScanResponse } from './contracts/response/ScanResponse';
 import type { UpdateAuditManualResponse } from './contracts/response/UpdateAuditManualResponse';
-import type { UpdateHistoryResponse } from './contracts/response/UpdateHistoryResponse';
 import type { UserResponse } from './contracts/response/UserResponse';
 import type { FetchOptions } from './contracts/types';
 
@@ -139,18 +137,11 @@ export class Client {
         return this.request<UpdateAuditManualResponse>('audit/manual', { uuid, status, device, criterion_id: criterionId, key }, {}, 'post', options);
     }
 
-    async historyUpdate({ uuid, monitoring = null, notifications = null, key }: UpdateHistoryRequest, options?: FetchOptions<UpdateHistoryResponse>) {
-        let params: any = { uuid, key };
-        if (monitoring !== null) params['monitoring'] = monitoring;
-        if (notifications !== null) params['notifications'] = notifications;
-        return this.request<UpdateHistoryResponse>('history/update', params, {}, 'post', options);
-    }
-
     async user({ key }: UserRequest, options?: FetchOptions<UserResponse>) {
         return this.request<UserResponse>('user', { key }, {}, 'get', options);
     }
 
-    private async request<T extends BaseResponse<unknown>>(
+    protected async request<T extends BaseResponse<unknown>>(
         endpoint: string,
         params: Record<string, any> = {},
         headers: Record<string, string> = {},

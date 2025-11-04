@@ -10,7 +10,7 @@ npm install @dockcodes/a11y-checker
 
 ## Usage
 ```ts
-import { Client, Language, Device } from "@dockcodes/a11y-checker";
+import { Client } from "@dockcodes/a11y-checker";
 
 const guest = new Client(); // without key
 // const client = new Client({apiKey: "YOUR_API_KEY"});
@@ -44,7 +44,6 @@ run();
 | `deleteAudit(params: DeleteRequest, options: FetchOptions) => DeleteResponse`                             | Delete an audit               |
 | `deleteHistory(params: DeleteRequest, options: FetchOptions) => DeleteResponse`                           | Delete an audit's history     |
 | `updateAuditManual(params: UpdateAuditManualRequest, options: FetchOptions) => UpdateAuditManualResponse` | Update status of manual audit |
-| `historyUpdate(params: UpdateHistoryRequest, options: FetchOptions) => UpdateHistoryResponse`             | Update history                |
 | `user(params: UserRequest, options: FetchOptions) => UserResponse`                                        | Get current user info         |
 
 ## Types
@@ -105,12 +104,6 @@ run();
 
 [UpdateAuditManualResponse]: https://github.com/dockcodes/a11y-checker-npm/blob/main/src/contracts/response/UpdateAuditManualResponse.ts
 [UpdateAuditManualResponse]
-
-[UpdateHistoryRequest]: https://github.com/dockcodes/a11y-checker-npm/blob/main/src/contracts/request/UpdateHistoryRequest.ts
-[UpdateHistoryRequest]
-
-[UpdateHistoryResponse]: https://github.com/dockcodes/a11y-checker-npm/blob/main/src/contracts/response/UpdateHistoryResponse.ts
-[UpdateHistoryResponse]
 
 [UserRequest]: https://github.com/dockcodes/a11y-checker-npm/blob/main/src/contracts/request/UserRequest.ts
 [UserRequest]
