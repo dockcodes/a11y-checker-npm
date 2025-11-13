@@ -19,7 +19,6 @@ import type { FetchOptions } from './contracts/types';
 export class Client {
     private readonly apiKey?: string;
     private readonly baseUrl: string;
-    private authToken?: string;
 
     constructor({
         apiKey,
@@ -30,10 +29,6 @@ export class Client {
     } = {}) {
         this.apiKey = apiKey;
         this.baseUrl = baseUrl.replace(/\/$/, '');
-    }
-
-    set setAuthToken(authToken: string) {
-        this.authToken = authToken;
     }
 
     async scan({ url, lang = 'en', device = 'all', sync = false, extraData = false, uniqueKey, recaptchaToken, key }: ScanRequest, options?: FetchOptions<ScanResponse>) {
@@ -148,7 +143,6 @@ export class Client {
             let url = `${this.baseUrl}/api/${endpoint}`;
             const reqHeaders = new Headers({
                 Accept: 'application/json',
-                ...(this.authToken ? { Authorization: `Bearer ${this.authToken}` } : {}),
                 ...headers,
             });
             let options: RequestInit = {
