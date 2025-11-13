@@ -1,14 +1,14 @@
 # @dockcodes/a11y-checker
 
-TypeScript client for Dock A11y Checker API.
+TypeScript client for [Accessibility Checker API](https://wcag.dock.codes/documentation/api-accessibility-checker/).
 
-## Installation
+### Installation
 
 ```bash
 npm install @dockcodes/a11y-checker
 ```
 
-## Usage
+### Usage
 ```ts
 import { Client } from "@dockcodes/a11y-checker";
 
@@ -32,10 +32,9 @@ async function run() {
 run();
 ```
 
-## API Methods
-| Method                                                                                                     | Description                   |
-|------------------------------------------------------------------------------------------------------------|-------------------------------|
-| `login(params: LoginRequest, options: FetchOptions) => LoginResponse`                                     | Run a new accessibility scan  |
+### API Methods
+| Method                                                                                                    | Description                   |
+|-----------------------------------------------------------------------------------------------------------|-------------------------------|
 | `scan(params: ScanRequest, options: FetchOptions) => ScanResponse`                                        | Run a new accessibility scan  |
 | `rescan(params: RescanRequest, options: FetchOptions) => RescanResponse`                                  | Rescan an existing audit      |
 | `audit(params: AuditRequest, options: FetchOptions) => AuditResponse`                                     | Get audit details             |
@@ -46,16 +45,10 @@ run();
 | `updateAuditManual(params: UpdateAuditManualRequest, options: FetchOptions) => UpdateAuditManualResponse` | Update status of manual audit |
 | `user(params: UserRequest, options: FetchOptions) => UserResponse`                                        | Get current user info         |
 
-## Types
+### Types
 
 [FetchOptions]: https://github.com/dockcodes/a11y-checker-npm/blob/main/src/contracts/types.ts
 [FetchOptions]
-
-[LoginRequest]: https://github.com/dockcodes/a11y-checker-npm/blob/main/src/contracts/request/LoginRequest.ts
-[LoginRequest]
-
-[LoginResponse]: https://github.com/dockcodes/a11y-checker-npm/blob/main/src/contracts/response/LoginResponse.ts
-[LoginResponse]
 
 [ScanRequest]: https://github.com/dockcodes/a11y-checker-npm/blob/main/src/contracts/request/ScanRequest.ts
 [ScanRequest]
@@ -111,7 +104,8 @@ run();
 [UserResponse]: https://github.com/dockcodes/a11y-checker-npm/blob/main/src/contracts/response/UserResponse.ts
 [UserResponse]
 
+### 🔑 Get Your API Key
 
-## Contact
+You can test as a guest, request an API key, or test the service directly on the website:
 
-If you need an API key or would like to learn more about this solution, please visit [wcag.dock.codes](https://wcag.dock.codes).
+👉 https://wcag.dock.codes/contact-us/

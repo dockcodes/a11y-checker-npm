@@ -2,7 +2,6 @@ import type { AuditRequest } from './contracts/request/AuditRequest';
 import type { AuditsRequest } from './contracts/request/AuditsRequest';
 import type { DeleteRequest } from './contracts/request/DeleteRequest';
 import type { HistoryRequest } from './contracts/request/HistoryRequest';
-import type { LoginBody } from './contracts/request/LoginRequest';
 import type { RescanRequest } from './contracts/request/RescanRequest';
 import type { ScanRequest } from './contracts/request/ScanRequest';
 import type { UpdateAuditManualRequest } from './contracts/request/UpdateAuditManualRequest';
@@ -12,7 +11,6 @@ import type { AuditsResponse } from './contracts/response/AuditsResponse';
 import type { BaseResponse, ErrorResponse } from './contracts/response/BaseResponse';
 import type { DeleteResponse } from './contracts/response/DeleteResponse';
 import type { HistoryResponse } from './contracts/response/HistoryResponse';
-import type { LoginResponse, LoginSuccess } from './contracts/response/LoginResponse';
 import type { ScanResponse } from './contracts/response/ScanResponse';
 import type { UpdateAuditManualResponse } from './contracts/response/UpdateAuditManualResponse';
 import type { UserResponse } from './contracts/response/UserResponse';
@@ -36,14 +34,6 @@ export class Client {
 
     set setAuthToken(authToken: string) {
         this.authToken = authToken;
-    }
-
-    async login(body: LoginBody, options?: FetchOptions<LoginResponse>) {
-        const onSuccess = (res: LoginSuccess) => {
-            options?.onSuccess?.(res);
-            this.setAuthToken = res.access_token;
-        };
-        return this.request<LoginResponse>('token', body, {}, 'post', { ...options, onSuccess });
     }
 
     async scan({ url, lang = 'en', device = 'all', sync = false, extraData = false, uniqueKey, recaptchaToken, key }: ScanRequest, options?: FetchOptions<ScanResponse>) {
