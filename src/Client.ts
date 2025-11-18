@@ -167,6 +167,9 @@ export class Client {
             if ('detail' in body) {
                 throw new Error(body.detail);
             }
+            if ('success' in body && body.success === false) {
+                throw new Error("Unhandled error.")
+            }
 
             return { response: body, status: res.status };
         } catch (err: any) {
