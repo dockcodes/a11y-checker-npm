@@ -32,4 +32,4 @@ export interface AuditFailed extends AuditBase {
     status: 'FAILED';
 }
 
-export type AuditResponse = BaseResponse<AuditSuccess | AuditFailed>;
+export type AuditResponse = BaseResponse<AuditSuccess | AuditQueued | AuditInProgress | AuditFailed>;
