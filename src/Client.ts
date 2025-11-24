@@ -1,3 +1,4 @@
+import { ApiError } from './ApiError';
 import type { AuditRequest } from './contracts/request/AuditRequest';
 import type { AuditsRequest } from './contracts/request/AuditsRequest';
 import type { DeleteRequest } from './contracts/request/DeleteRequest';
@@ -138,42 +139,42 @@ export class Client {
 
         const controller = new AbortController();
         const timeout = setTimeout(() => controller.abort(), 300000); // 5 min timeout
+        let url = `${this.baseUrl}/api/${endpoint}`;
+        const reqHeaders = new Headers({
+            Accept: 'application/json',
+            ...headers,
+        });
+        let options: RequestInit = {
+            method,
+            headers: reqHeaders,
+            signal: controller.signal,
+            ...fetchOptions,
+        };
+
+        if (method === 'get' || method === 'delete') {
+            const query = new URLSearchParams(Object.fromEntries(Object.entries(params).filter(([_, v]) => v !== undefined))).toString();
+            url += `?${query}`;
+        } else if (method === 'post') {
+            reqHeaders.set('Content-Type', 'application/json');
+            options.headers = reqHeaders;
+            options.body = JSON.stringify(params);
+        }
+
+        const res = await fetch(url, options);
 
         try {
-            let url = `${this.baseUrl}/api/${endpoint}`;
-            const reqHeaders = new Headers({
-                Accept: 'application/json',
-                ...headers,
-            });
-            let options: RequestInit = {
-                method,
-                headers: reqHeaders,
-                signal: controller.signal,
-                ...fetchOptions,
-            };
-
-            if (method === 'get' || method === 'delete') {
-                const query = new URLSearchParams(Object.fromEntries(Object.entries(params).filter(([_, v]) => v !== undefined))).toString();
-                url += `?${query}`;
-            } else if (method === 'post') {
-                reqHeaders.set('Content-Type', 'application/json');
-                options.headers = reqHeaders;
-                options.body = JSON.stringify(params);
-            }
-
-            const res = await fetch(url, options);
             const body = await res.json();
 
             if ('detail' in body) {
-                throw new Error(body.detail);
+                throw new ApiError(body.detail, res.status);
             }
             if ('success' in body && body.success === false) {
-                throw new Error("Unhandled error.")
+                throw new ApiError('Unhandled error.', res.status);
             }
 
             return { response: body, status: res.status };
         } catch (err: any) {
-            throw new Error(`Request failed: ${err.message}`);
+            throw new ApiError(`Request failed: ${err.message}`, res.status);
         } finally {
             clearTimeout(timeout);
         }
