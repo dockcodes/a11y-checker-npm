@@ -7,13 +7,11 @@ interface AuditBase {
     created_at: string;
     updated_at: string;
     requests_left: number;
-}
-
-interface AuditAsyncData {
     url: string;
     expires_at: string | null;
 }
-export interface AuditSuccess extends AuditBase, AuditAsyncData {
+
+export interface AuditSuccess extends AuditBase {
     desktop?: AuditContent;
     mobile?: AuditContent;
     status: 'SUCCESS';
@@ -26,14 +24,14 @@ export interface AuditQueued extends AuditBase {
     mobile?: { screenshot: string };
     title: string;
 }
-export interface AuditInProgress extends AuditBase, AuditAsyncData {
+export interface AuditInProgress extends AuditBase {
     status: 'IN_PROGRESS';
     desktop?: Pick<AuditContent, 'screenshot'>;
     mobile?: Pick<AuditContent, 'screenshot'>;
     title: string;
 }
 
-export interface AuditFailed extends AuditBase, AuditAsyncData {
+export interface AuditFailed extends AuditBase {
     status: 'FAILED';
     error_message: string;
 }
