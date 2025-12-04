@@ -32,7 +32,10 @@ export class Client {
         this.baseUrl = baseUrl.replace(/\/$/, '');
     }
 
-    async scan({ url, lang = 'en', device = 'all', sync = false, extraData = false, uniqueKey, recaptchaToken, key }: ScanRequest, options?: FetchOptions<ScanResponse>) {
+    async scan<Sync extends boolean = false>(
+        { url, lang = 'en', device = 'all', sync = false as Sync, extraData = false, uniqueKey, recaptchaToken, key }: ScanRequest<Sync>,
+        options?: FetchOptions<ScanResponse<Sync>>
+    ) {
         const data: Record<string, any> = {
             url,
             sync,
@@ -43,11 +46,11 @@ export class Client {
             key,
         };
         if (device !== 'all') data.device = device;
-        return this.request<ScanResponse>('scan', data, {}, 'get', options);
+        return this.request<ScanResponse<Sync>>('scan', data, {}, 'get', options);
     }
 
-    async rescan({ uuid, lang = 'en', sync = false, extraData = false, recaptchaToken, key }: RescanRequest, options?: FetchOptions<ScanResponse>) {
-        return this.request<ScanResponse>(
+    async rescan<Sync extends boolean = false>({ uuid, lang = 'en', sync = false as Sync, extraData = false, recaptchaToken, key }: RescanRequest<Sync>, options?: FetchOptions<ScanResponse<Sync>>) {
+        return this.request<ScanResponse<Sync>>(
             'rescan',
             {
                 uuid,

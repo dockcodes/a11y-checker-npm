@@ -1,15 +1,4 @@
+import { AuditFailed, AuditInProgress, AuditQueued, AuditSuccess } from './AuditResponse';
 import type { BaseResponse } from './BaseResponse';
 
-export interface ScanSuccess {
-  address_uuid: string;
-  created_at: string;
-  desktop?: { screenshot: string };
-  mobile?: { screenshot: string };
-  requests_left: number;
-  status: 'QUEUED';
-  title: string;
-  updated_at: string;
-  uuid: string;
-}
-
-export type ScanResponse = BaseResponse<ScanSuccess>;
+export type ScanResponse<T extends boolean> = BaseResponse<Omit<T extends true ? AuditSuccess | AuditQueued | AuditInProgress | AuditFailed : AuditQueued, 'expires_at' | 'url'>>;

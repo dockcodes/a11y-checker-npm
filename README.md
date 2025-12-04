@@ -36,7 +36,7 @@ run();
 | Method                                                                                                    | Description                   |
 |-----------------------------------------------------------------------------------------------------------|-------------------------------|
 | `scan(params: ScanRequest, options: FetchOptions) => ScanResponse`                                        | Run a new accessibility scan  |
-| `rescan(params: RescanRequest, options: FetchOptions) => RescanResponse`                                  | Rescan an existing audit      |
+| `rescan(params: RescanRequest, options: FetchOptions) => ScanResponse`                                    | Rescan an existing audit      |
 | `audit(params: AuditRequest, options: FetchOptions) => AuditResponse`                                     | Get audit details             |
 | `audits(params: AuditsRequest, options: FetchOptions) => AuditsResponse`                                  | Get multiple audits           |
 | `history(params: HistoryRequest, options: FetchOptions) => HistoryResponse`                               | Get audit history             |
@@ -58,9 +58,6 @@ run();
 
 [RescanRequest]: https://github.com/dockcodes/a11y-checker-npm/blob/main/src/contracts/request/RescanRequest.ts
 [RescanRequest]
-
-[RescanResponse]: https://github.com/dockcodes/a11y-checker-npm/blob/main/src/contracts/response/RescanResponse.ts
-[RescanResponse]
 
 [AuditRequest]: https://github.com/dockcodes/a11y-checker-npm/blob/main/src/contracts/request/AuditRequest.ts
 [AuditRequest]
