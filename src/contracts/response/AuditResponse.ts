@@ -13,14 +13,14 @@ interface AuditAsyncData {
     url: string;
     expires_at: string | null;
 }
-export interface AuditSuccess extends AuditBase {
+export interface AuditSuccess extends AuditBase, AuditAsyncData {
     desktop?: AuditContent;
     mobile?: AuditContent;
     status: 'SUCCESS';
     title: string;
 }
 
-export interface AuditQueued extends AuditBase, AuditAsyncData {
+export interface AuditQueued extends AuditBase {
     status: 'QUEUED';
     desktop?: { screenshot: string };
     mobile?: { screenshot: string };
